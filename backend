@@ -1,0 +1,93 @@
+# styloai/backend/app.py - Flask Backend
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import tensorflow as tf
+import numpy as np
+import cv2
+import base64
+import io
+from PIL import Image
+import pymongo
+import speech_recognition as sr
+import pyttsx3
+
+app = Flask(__name__)
+CORS(app)
+
+# MongoDB setup
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+db = client["styloai"]
+users = db["users"]
+
+# TensorFlow model placeholder
+model = tf.keras.models.load_model("models/style_model.h5")
+
+# Text-to-Speech setup
+engine = pyttsx3.init()
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+@app.route("/api/styloai", methods=["POST"])
+def get_suggestions():
+    data = request.json
+    input_text = data.get("input")
+
+    # Mock TensorFlow output for demo
+    suggestion = f"Based on '{input_text}', we recommend a modern casual outfit with denim and sneakers."
+    speak(suggestion)
+
+    return jsonify({"response": suggestion})
+
+@app.route("/api/image-upload", methods=["POST"])
+def analyze_image():
+    file = request.files["image"]
+    image = Image.open(file.stream).convert("RGB")
+    image_np = np.array(image.resize((224, 224))) / 255.0
+    prediction = model.predict(np.expand_dims(image_np, axis=0))[0]
+
+    # Mock labels
+    labels = ["Casual", "Formal", "Sporty"]
+    predicted_label = labels[np.argmax(prediction)]
+
+    return jsonify({"style": predicted_label})
+
+@app.route("/api/voice-upload", methods=["POST"])
+def voice_to_text():
+    audio_file = request.files['audio']
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(audio_file) as source:
+        audio = recognizer.record(source)
+    try:
+        text = recognizer.recognize_google(audio)
+        return jsonify({"transcript": text})
+    except sr.UnknownValueError:
+        return jsonify({"error": "Could not understand audio"}), 400
+
+@app.route("/api/save-wardrobe", methods=["POST"])
+def save_wardrobe():
+    data = request.json
+    user_id = data["user_id"]
+    wardrobe_data = data["wardrobe"]
+    users.update_one({"_id": user_id}, {"$set": {"wardrobe": wardrobe_data}}, upsert=True)
+    return jsonify({"message": "Wardrobe saved."})
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
+
+/* HTML (JavaScript integration snippet for /api/styloai interaction) */
+// In script.js
+async function submitTextInput() {
+  const input = document.querySelector("input").value;
+  const res = await fetch("http://localhost:5000/api/styloai", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ input }),
+  });
+  const data = await res.json();
+  alert(data.response);
+}
+
+// Example usage
+// <button onclick="submitTextInput()">Get Suggestions</button>
