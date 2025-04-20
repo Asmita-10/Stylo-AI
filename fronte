@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StyloAI Home</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <header><nav
+    a href="index.html">Home</a>
+      <a href="style-suggestions.html">Style Suggestions</a>
+      <a href="wardrobe.html">Wardrobe</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+  </nav>
+  
+  </header>
+  <style>
+    body {
+      background-color: #1a1e29;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #FFA998;
+      padding: 1rem 2rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #FFA998;
+    }
+
+    .nav-items {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-items input {
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .nav-icon {
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #FFC397;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin: 2rem 0 0.5rem;
+      text-align: center;
+    }
+
+    p.subtitle {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      padding-bottom: 3rem;
+    }
+
+    .card {
+      background-color: #2a2f40;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 250px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: #aaa;
+      margin-bottom: 1rem;
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #18ACBA;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">👗 StyloAI</div>
+    <div class="nav-items">
+      <input type="text" placeholder="Search your style...">
+      <span class="nav-icon">❤️</span>
+      <span class="nav-icon">🛒</span>
+      <span class="nav-icon">👤</span>
+    </div>
+  </header>
+
+  <h1>Welcome to StyloAI</h1>
+  <p class="subtitle">Your AI-powered fashion style assistant for personalized recommendations</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">⌨️</div>
+      <div class="card-title">Text Input</div>
+      <div class="card-desc">Describe your style preferences and get personalized outfit recommendations.</div>
+      <a href="/style-suggestions">Try Text Input</a>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🖼️</div>
+      <div class="card-title">Image Analysis</div>
+      <div class="card-desc">Upload a photo to analyze your style and get matching recommendations.</div>
+      <a href="/wardrobe">Try Image Upload</a>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🎙️</div>
+      <div class="card-title">Voice Input</div>
+      <div class="card-desc">Use your voice to describe your preferences for quick suggestions.</div>
+      <a href="/contact">Try Voice Input</a>
+    </div>
+  </div>
+</body>
+</html>
